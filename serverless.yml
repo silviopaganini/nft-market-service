@@ -1,0 +1,73 @@
+service: nft-marketplace
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+  serverless-offline:
+    httpPort: 4000
+  customDomain:
+    apiType: rest
+    autoDomain: true
+    basePath: ${self:provider.stage}
+    createRoute53Record: true
+    certificateArn: ${file(./config.${opt:stage, 'dev'}.yml):CERTIFICATE_ARN }
+    domainName: ${file(./config.${opt:stage, 'dev'}.yml):DOMAIN_NAME }
+    endpointType: 'edge'
+    hostedZoneId:  ${file(./config.${opt:stage, 'dev'}.yml):ZONE_ID }
+    securityPolicy: tls_1_2
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-domain-manager
+
+provider:
+  apiName: marketplace-service
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+  lambdaHashingVersion: 20201221
+  apiGateway:
+    shouldStartNameWithService: true
+    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    IPFS_HOST: ${file(./config.${opt:stage, 'dev'}.yml):IPFS_HOST}
+    IPFS_PROTOCOL: ${file(./config.${opt:stage, 'dev'}.yml):IPFS_PROTOCOL}
+    IPFS_PORT: ${file(./config.${opt:stage, 'dev'}.yml):IPFS_PORT}
+    APIETHERSCAN: ${file(./config.${opt:stage, 'dev'}.yml):APIETHERSCAN}
+
+functions:
+  mint:
+    handler: handler.mint
+    events:
+      - http:
+          method: post
+          path: mint
+          cors: true
+
+  tokens: 
+    handler: handler.token
+    events:
+      - http:
+          method: get
+          path: token
+          cors: true
+
+  token: 
+    handler: handler.token
+    events:
+      - http:
+          method: get
+          path: token/{id}
+          cors: true
+
+  ethusd:
+    handler: handler.ethusd
+    events:
+      - http:
+          method: get
+          path: ethusd
+          cors: true

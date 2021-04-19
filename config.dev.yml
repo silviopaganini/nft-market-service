@@ -1,0 +1,8 @@
+IPFS_HOST: ipfs.infura.io
+IPFS_PROTOCOL: https
+IPFS_PORT: 5001
+APIETHERSCAN: 
+DOMAIN_NAME: api.nft.fluuu.id
+CERTIFICATE_ARN: 
+ZONE_ID: 
+
