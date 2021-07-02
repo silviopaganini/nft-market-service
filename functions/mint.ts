@@ -24,7 +24,7 @@ const mint: APIGatewayProxyHandler = async (event, _context) => {
       protocol: IPFS_PROTOCOL,
       headers: {
         authorization: `Basic ${Buffer.from(
-          `${IPFS_INFURA_PROJECT_ID}:${IPFS_INFURA_SECRET}`
+          IPFS_INFURA_PROJECT_ID + ':' + IPFS_INFURA_SECRET
         ).toString('base64')}`,
       },
     })
