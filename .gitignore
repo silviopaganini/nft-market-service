@@ -9,3 +9,4 @@ jspm_packages
 .webpack
 config.prod.json
 config.prod.yml
+test.js
