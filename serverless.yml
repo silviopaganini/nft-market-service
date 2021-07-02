@@ -38,6 +38,7 @@ provider:
     IPFS_PROTOCOL: ${file(./config.${opt:stage, 'dev'}.yml):IPFS_PROTOCOL}
     IPFS_PORT: ${file(./config.${opt:stage, 'dev'}.yml):IPFS_PORT}
     APIETHERSCAN: ${file(./config.${opt:stage, 'dev'}.yml):APIETHERSCAN}
+    IPFS_INFURA: ${file(./config.${opt:stage, 'dev'}.yml):IPFS_INFURA}
 
 functions:
   mint:
