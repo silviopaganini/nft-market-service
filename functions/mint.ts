@@ -10,10 +10,23 @@ const mint: APIGatewayProxyHandler = async (event, _context) => {
       throw new Error('No objects to be minted')
     }
 
-    const { IPFS_INFURA } = process.env
+    const {
+      IPFS_HOST,
+      IPFS_PROTOCOL,
+      IPFS_PORT,
+      IPFS_INFURA_PROJECT_ID,
+      IPFS_INFURA_SECRET,
+    } = process.env
 
     const client = IpfsClient({
-      url: IPFS_INFURA,
+      host: IPFS_HOST,
+      port: Number(IPFS_PORT),
+      protocol: IPFS_PROTOCOL,
+      headers: {
+        authorization: `Basic ${Buffer.from(
+          `${IPFS_INFURA_PROJECT_ID}:${IPFS_INFURA_SECRET}`
+        ).toString('base64')}`,
+      },
     })
 
     const objectsIPFS: string[] = await Promise.all(
