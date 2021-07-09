@@ -40,4 +40,4 @@ jobs:
       run: sls config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Deploy Lambda functions
-      run: doppler run --command "sls deploy -s prod" --token=${{secrets.DOPPLER_TOKEN}} --no-prompt
+      run: doppler run --command "sls deploy -s prod" --token=${{secrets.DOPPLER_TOKEN}}
