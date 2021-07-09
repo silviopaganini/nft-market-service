@@ -13,26 +13,34 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
-    - uses: actions/checkout@v2
+    - name:  🛎️ Checkout
+      uses: actions/checkout@v2
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
 
-    - run: npm ci
+    - name: ❄️ Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
-    - name: Create ENV file
-      run: |
-        cat > config.prod.yml << EOF
-        ${{ secrets.ENV }}
-        EOF
+    - name: ⚡️ Install
+      run: npm ci
 
-    - name: Install Serverless Framework
+    - name: Install CLI
+      uses: dopplerhq/cli-action@v1
+
+    - name: ⚡️ Install Serverless Framework
       run: npm install -g serverless
 
     - name: Serverless AWS authentication
       run: sls config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+    - name: Setup Doppler 
+      run: doppler setup --token=${{secrets.DOPPLER_TOKEN}} --no-prompt
+
     - name: Deploy Lambda functions
-      run: SLS_DEBUG=* sls deploy -s prod
+      run: doppler run sls deploy -s prod

@@ -11,10 +11,10 @@ custom:
     autoDomain: true
     basePath: ${self:provider.stage}
     createRoute53Record: true
-    certificateArn: ${file(./config.${opt:stage, 'dev'}.yml):CERTIFICATE_ARN }
-    domainName: ${file(./config.${opt:stage, 'dev'}.yml):DOMAIN_NAME }
+    certificateArn: ${env:CERTIFICATE_ARN }
+    domainName: ${env:DOMAIN_NAME }
     endpointType: 'edge'
-    hostedZoneId:  ${file(./config.${opt:stage, 'dev'}.yml):ZONE_ID }
+    hostedZoneId:  ${env:ZONE_ID }
     securityPolicy: tls_1_2
 
 plugins:
@@ -25,7 +25,7 @@ plugins:
 provider:
   apiName: marketplace-service
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   stage: ${opt:stage, 'dev'}
   region: us-east-1
   lambdaHashingVersion: 20201221
@@ -34,12 +34,12 @@ provider:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-    IPFS_HOST: ${file(./config.${opt:stage, 'dev'}.yml):IPFS_HOST}
-    IPFS_PROTOCOL: ${file(./config.${opt:stage, 'dev'}.yml):IPFS_PROTOCOL}
-    IPFS_PORT: ${file(./config.${opt:stage, 'dev'}.yml):IPFS_PORT}
-    APIETHERSCAN: ${file(./config.${opt:stage, 'dev'}.yml):APIETHERSCAN}
-    IPFS_INFURA_PROJECT_ID: ${file(./config.${opt:stage, 'dev'}.yml):IPFS_INFURA_PROJECT_ID}
-    IPFS_INFURA_SECRET: ${file(./config.${opt:stage, 'dev'}.yml):IPFS_INFURA_SECRET}
+    IPFS_HOST: ${env:IPFS_HOST}
+    IPFS_PROTOCOL: ${env:IPFS_PROTOCOL}
+    IPFS_PORT: ${env:IPFS_PORT}
+    APIETHERSCAN: ${env:APIETHERSCAN}
+    IPFS_INFURA_PROJECT_ID: ${env:IPFS_INFURA_PROJECT_ID}
+    IPFS_INFURA_SECRET: ${env:IPFS_INFURA_SECRET}
 
 functions:
   mint:

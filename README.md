@@ -17,7 +17,7 @@ npm install
 
 ## Setup
 
-Don't forget to change `config.dev.yml`
+env file required
 
 ```yml
 IPFS_HOST: ipfs.infura.io
